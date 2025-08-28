@@ -1,6 +1,9 @@
 from django.db import models
-
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+import uuid
 # Create your models here.
+
 
 
 
@@ -23,14 +26,14 @@ class Comuna(models.Model):
 
 class Inmueble(models.Model):
     class Tipo_de_inmueble(models.TextChoices):
-        casa = "CASA", _("casa")
-        departamento = "DEPARTAMENTO", _("departamento")
-        parcela = "PARCELA", _("parcela")
+        casa = "CASA", _("Casa")
+        departamento = "DEPARTAMENTO", _("Departamento")
+        parcela = "PARCELA", _("Parcela")
 
 
 
 
-
+    propietario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="inmuebles")
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     m2_construidos = models.FloatField(default=0)
@@ -44,3 +47,34 @@ class Inmueble(models.Model):
     actualizado = models.DateTimeField(auto_now=True)
     comuna = models.ForeignKey(Comuna, on_delete=models.PROTECT, related_name="inmuebles")
     tipo_de_inmueble = models.CharField(max_length=20, choices=Tipo_de_inmueble.choices)
+
+class SolicitudArriendo(models.Model):
+
+    class EstadoSolicitud(models.TextChoices):
+        PENDIENTE = "P", _("Pendiente")
+        ACEPTADA = "A", _("Aceptada")
+        RECHAZADA = "R", _("Rechazada")
+
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    inmueble = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name="solicitudes")
+    arrendatario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="solicitudes_enviadas")
+    mensaje = models.TextField()
+    estado = models.CharField(max_length=10, choices=EstadoSolicitud.choices, default=EstadoSolicitud.PENDIENTE)
+    creado = models.DateTimeField(auto_now_add=True)
+    actualizado = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.uuid}  |  {self.inmueble}  |  {self.estado}"
+
+
+class PerfilUser(models.Model):
+    class TipoUsuario(models.TextChoices):
+        ARRENDATARIO = "ARRENDATARIO", _("Arrendatario")
+        ARRENDADOR = "ARRENDADOR", _("Arrendador")
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")    
+    tipo_usuario = models.CharField(max_length=15, choices=TipoUsuario.choices, default=TipoUsuario.ARRENDATARIO)
+    rut = models.CharField(max_length=50, unique=True, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.get_full_name} | {self.tipo_usuario}"
