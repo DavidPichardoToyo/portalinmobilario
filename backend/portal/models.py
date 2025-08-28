@@ -48,6 +48,10 @@ class Inmueble(models.Model):
     comuna = models.ForeignKey(Comuna, on_delete=models.PROTECT, related_name="inmuebles")
     tipo_de_inmueble = models.CharField(max_length=20, choices=Tipo_de_inmueble.choices)
 
+    def __str__(self):
+        return f"Propietario: {self.propietario} | {self.nombre}"
+    
+
 class SolicitudArriendo(models.Model):
 
     class EstadoSolicitud(models.TextChoices):
