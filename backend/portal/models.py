@@ -36,7 +36,7 @@ class Inmueble(models.Model):
 
 
 
-    propietario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="inmuebles")
+    propietario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="inmuebles", null=True, blank=True)
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     m2_construidos = models.FloatField(default=0)
@@ -52,7 +52,7 @@ class Inmueble(models.Model):
     tipo_de_inmueble = models.CharField(max_length=20, choices=Tipo_de_inmueble.choices)
 
     def __str__(self):
-        return f"Propietario: {self.propietario} | {self.nombre}"
+        return f"u{self.id} | {self.propietario} | {self.nombre}"
     
 
 class SolicitudArriendo(models.Model):
@@ -64,7 +64,7 @@ class SolicitudArriendo(models.Model):
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     inmueble = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name="solicitudes")
-    arrendatario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="solicitudes_enviadas")
+    arrendatario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="solicitudes_enviadas", null=True, blank=True)
     mensaje = models.TextField()
     estado = models.CharField(max_length=10, choices=EstadoSolicitud.choices, default=EstadoSolicitud.PENDIENTE)
     creado = models.DateTimeField(auto_now_add=True)

@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Region Lista</title>
+    <title>Comuna</title>
 </head>
 <body>
-    
-    {% for region in regiones %}
-        {{region.nro_region}}
-        {{region.nombre}}
-        {{region.id}}
-    
-    
+    {% for s in solicitudes %}
+        <div>
+            <p>{{s.nombre}}</p>
+            <p>{{s.id}}</p>
+        </div>
     {% endfor %}
-
-
-
+    
 </body>
 </html>
