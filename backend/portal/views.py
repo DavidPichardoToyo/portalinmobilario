@@ -166,13 +166,13 @@ def register_view(request):
             messages.succes(request, "Cuenta creada correctamente.")
             return redirect("home")
     else:
-        form.RegisterForm()
+        form = RegisterForm()
     return render (request, "registration/register.html", {"form": form})
 
 def login_view(request):
     if request.user.is_authenticated:
         return redirect("home")
-    form = LoginForm(request, data=resquest.POST or None)
+    form = LoginForm(request, data=request.POST or None)
     if request.method == "POST" and form.is_valid():
         user = form.get_user()
         login(request, user)

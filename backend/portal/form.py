@@ -62,8 +62,8 @@ class RegisterForm(UserCreationForm):
             "last_name",
             "email",
             "rut",
-            "tipo_usuario",
             "imagen",
+            "tipo_usuario",
             "password1",
             "password2"
 
