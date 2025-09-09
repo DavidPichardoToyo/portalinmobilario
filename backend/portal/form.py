@@ -14,7 +14,7 @@ class ComunaForm(forms.ModelForm):
         model = Comuna
         fields = ["region", "nombre"]
 
-class InmueblesForm(forms.ModelForm):
+class InmuebleForm(forms.ModelForm):
     class Meta:
         model = Inmueble
         fields = [
