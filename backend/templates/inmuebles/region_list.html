@@ -3,19 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Region Lista</title>
+    <title>regiones lista</title>
 </head>
 <body>
-    
-    {% for region in regiones %}
+
+    {% for region in regiones%}
         {{region.nro_region}}
-        {{region.nombre}}
-        {{region.id}}
+    {% endfor%}
     
-    
-    {% endfor %}
-
-
-
 </body>
 </html>
